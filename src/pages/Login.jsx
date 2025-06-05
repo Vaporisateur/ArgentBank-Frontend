@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/img/argentBankLogo.png";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Button from "../components/Button";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -27,30 +29,16 @@ function Login() {
         // Rediriger vers /profile
         navigate("/profile");
       } else {
-        alert("Erreur de connexion : " + data.message);
+        alert(data.message);
       }
     } catch (error) {
-      alert("Erreur serveur : " + error.message);
+      alert(error.message);
     }
   };
 
   return (
     <>
-      <nav className="main-nav">
-        <a className="main-nav-logo" href="/">
-          <img
-            className="main-nav-logo-image"
-            src={logo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </a>
-        <div>
-          <a className="main-nav-item" href="/login">
-            <i className="fa fa-user-circle"></i> Sign In
-          </a>
-        </div>
-      </nav>
+      <Header />
 
       <main className="main bg-dark">
         <section className="sign-in-content">
@@ -79,16 +67,14 @@ function Login() {
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-            <button type="submit" className="sign-in-button">
+            <Button type="submit" className="sign-in-button">
               Sign In
-            </button>
+            </Button>
           </form>
         </section>
       </main>
 
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/img/argentBankLogo.png";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import AccountCard from "../components/AccountCard";
+import Button from "../components/Button";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -41,24 +44,7 @@ function Profile() {
 
   return (
     <>
-      <nav className="main-nav">
-        <a className="main-nav-logo" href="/">
-          <img
-            className="main-nav-logo-image"
-            src={logo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </a>
-        <div>
-          <span className="main-nav-item">
-            <i className="fa fa-user-circle"></i> {user?.userName || ""}
-          </span>
-          <button className="main-nav-item" onClick={handleSignOut}>
-            <i className="fa fa-sign-out"></i> Sign Out
-          </button>
-        </div>
-      </nav>
+      <Header isAuthenticated={true} userName={user?.userName} onLogout={handleSignOut} />
 
       <main className="main bg-dark">
         <div className="header">
@@ -66,49 +52,34 @@ function Profile() {
             Welcome back<br />
             {user?.firstName} {user?.lastName}!
           </h1>
-          <button className="edit-button">Edit Name</button>
+          <Button className="edit-button" onClick={() => alert("Not implemented")}>
+            Edit Name
+          </Button>
         </div>
 
         <h2 className="sr-only">Accounts</h2>
 
         {/* Comptes simulés (à remplacer plus tard) */}
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-            <p className="account-amount">$2,082.79</p>
-            <p className="account-amount-description">Available Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
-          </div>
-        </section>
+        <AccountCard
+          title="Argent Bank Checking (x8349)"
+          amount="$2,082.79"
+          description="Available Balance"
+        />
 
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Savings (x6712)</h3>
-            <p className="account-amount">$10,928.42</p>
-            <p className="account-amount-description">Available Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
-          </div>
-        </section>
+        <AccountCard
+          title="Argent Bank Savings (x6712)"
+          amount="$10,928.42"
+          description="Available Balance"
+        />
 
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-            <p className="account-amount">$184.30</p>
-            <p className="account-amount-description">Current Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
-          </div>
-        </section>
+        <AccountCard
+          title="Argent Bank Credit Card (x8349)"
+          amount="$184.30"
+          description="Current Balance"
+        />
       </main>
 
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
+      <Footer />
     </>
   );
 }

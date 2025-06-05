@@ -1,27 +1,14 @@
 import React from "react";
-import logo from "../assets/img/argentBankLogo.png";
 import iconChat from "../assets/img/icon-chat.png";
 import iconMoney from "../assets/img/icon-money.png";
 import iconSecurity from "../assets/img/icon-security.png";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function Home() {
   return (
     <>
-      <nav className="main-nav">
-        <a className="main-nav-logo" href="/">
-          <img
-            className="main-nav-logo-image"
-            src={logo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </a>
-        <div>
-          <a className="main-nav-item" href="/login">
-            <i className="fa fa-user-circle"></i> Sign In
-          </a>
-        </div>
-      </nav>
+      <Header />
 
       <main>
         <div className="hero">
@@ -65,9 +52,7 @@ function Home() {
         </section>
       </main>
 
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
+      <Footer />
     </>
   );
 }
