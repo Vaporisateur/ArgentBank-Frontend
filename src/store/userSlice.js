@@ -49,12 +49,35 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
+// Thunk pour mettre à jour le nom d'utilisateur
+export const updateUserName = createAsyncThunk(
+  "user/updateUserName",
+  async ({ token, userName }, { rejectWithValue }) => {
+    try {
+      const res = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userName }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return rejectWithValue(data.message);
+      }
+      return data.body;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     token: localStorage.getItem("token") || null,
     user: null,
-    loading: false,
     error: null,
   },
   reducers: {
@@ -67,19 +90,19 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.token = action.payload;
-        state.loading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload;
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.user = action.payload;
+      })
+      .addCase(updateUserName.fulfilled, (state, action) => {
+        state.user.userName = action.payload.userName;
       });
   },
 });

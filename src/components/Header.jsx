@@ -25,7 +25,11 @@ function Header({ isAuthenticated = false, userName = "", onLogout }) {
             </Link>
           ) : (
             <>
-              <span className="main-nav-item">
+              <span
+                className="main-nav-item"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/profile")}
+              >
                 <i className="fa fa-user-circle"></i> {userName}
               </span>
               <Button type="submit" className="main-nav-item" onClick={onLogout}>

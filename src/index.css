@@ -279,6 +279,52 @@ body {
   color: #fff;
 }
 
+.edit-form {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 16px #0001;
+}
+
+.edit-title {
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.input-disabled {
+  background: #e7e7e7;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.input-row .input-wrapper {
+  flex-direction: row;
+  align-items: center;
+}
+
+.input-row .input-wrapper label {
+  width: 35%;
+  margin-bottom: 0;
+}
+
+.input-row .input-wrapper input {
+  flex: 1;
+  margin-left: 12px;
+  width: 65%;
+}
+
+.edit-buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  gap: 10px;
+}
+
+.edit-buttons-wrapper .edit-button {
+  flex: 1;
+}
+
 @media (min-width: 720px) {
   .account {
     flex-direction: row;
