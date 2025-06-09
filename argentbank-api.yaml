@@ -1,0 +1,430 @@
+openapi: 3.0.0
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '2.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+
+servers:
+  - url: http://localhost:3001/api/v2
+
+tags:
+  - name: User Module
+  - name: Accounts and Transactions Module
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+        userName:
+          type: string
+          description: user public name
+
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        body:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        userName:
+          type: string
+
+    AccountResponse:
+      type: object
+      properties:
+        accountID:
+          type: string
+          description: account ID
+        accountName:
+          type: string
+          description: account name
+        accountCurrency:
+          type: string
+          description: account currency
+        currentBalance:
+          type: number
+          description: current account balance
+          format: double
+
+    TransactionsResponse:
+      type: object
+      properties:
+        transactionID:
+          type: string
+          description: transaction ID
+        transactionType:
+          type: string
+          description: type of transaction
+        date:
+          type: string
+          format: date-time
+          description: date of transaction
+        description:
+          type: string
+          description: description of transaction
+        amount:
+          type: number
+          description: transaction amount
+        balance:
+          type: number
+          description: available balance
+          format: double
+        category:
+          type: string
+          description: name of the category
+        note:
+          type: string
+          description: user note
+
+    TransactionCategory:
+      type: object
+      properties:
+        category:
+          type: string
+
+    TransactionNote:
+      type: object
+      properties:
+        note:
+          type: string
+
+    TransactionResponseNote:
+      type: object
+      properties:
+        note:
+          type: string
+        noteID:
+          type: string
+
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Signup Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+
+  /user/profile:
+    post:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+
+  /user/account:
+    post:
+      tags:
+        - Accounts and Transactions Module
+      summary: All accounts
+      description: API for retrieving all user account
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: All accounts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponse'
+        '401':
+          description: Unauthorized user
+        '500':
+          description: Internal Server Error
+
+  /account/{accountID}/transactions:
+    post:
+      tags:
+        - Accounts and Transactions Module
+      summary: Account transactions
+      description: API for retrieving list of transactions associated with an account
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: accountID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of an account
+      responses:
+        '200':
+          description: All transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionsResponse'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Account not found
+        '500':
+          description: Internal Server Error
+
+  /transactions/{transactionID}/category:
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Update transaction's category
+      description: API for updating category of transaction
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of a transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionCategory'
+      responses:
+        '200':
+          description: Transaction's category modified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionCategory'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
+
+  /transactions/{transactionID}/note:
+    post:
+      tags:
+        - Accounts and Transactions Module
+      summary: Add transaction's note
+      description: API for adding a note to a transaction
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of a transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionNote'
+      responses:
+        '200':
+          description: Note added to the transaction successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponseNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not created
+        '500':
+          description: Internal Server Error
+
+  /transactions/{transactionID}/note/{noteID}:
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Modify transaction's note
+      description: API for modifying a note of a transaction
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of a transaction
+        - name: noteID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of a note
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionNote'
+      responses:
+        '200':
+          description: Note modified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponseNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not modified
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - Accounts and Transactions Module
+      summary: Delete transaction's note
+      description: API for deleting a note of a transaction
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of a transaction
+        - name: noteID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of a note
+      responses:
+        '200':
+          description: Note deleted successfully
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not deleted
+        '500':
+          description: Internal Server Error
