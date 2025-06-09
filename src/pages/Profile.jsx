@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AccountCard from "../components/AccountCard";
 import Button from "../components/Button";
 import { fetchUserProfile, updateUserName } from "../store/userSlice";
+import EditUserInfo from "../components/EditUserInfo";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -13,11 +14,11 @@ function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [newUserName, setNewUserName] = useState(user?.userName || "");
 
-  const handleUpdateUserName = () => {
-  dispatch(updateUserName({ token, userName: newUserName }))
-    .unwrap()
-    .then(() => setEditMode(false))
-    .catch((err) => alert("Erreur: " + err));
+  const handleUpdateUserName = (newUserName, onSuccess) => {
+    dispatch(updateUserName({ token, userName: newUserName }))
+      .unwrap()
+      .then(() => onSuccess())
+      .catch((err) => alert("Erreur: " + err));
   };
 
   useEffect(() => {
@@ -45,53 +46,12 @@ function Profile() {
               </Button>
             </>
           ) : (
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                handleUpdateUserName();
-              }}
-              className="edit-form input-row"
-            >
-              <h2 className="edit-title">Edit user info</h2>
-              <div className="input-wrapper">
-                <label htmlFor="userName">User name:</label>
-                <input
-                  type="text"
-                  id="userName"
-                  value={newUserName}
-                  onChange={e => setNewUserName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="input-wrapper">
-                <label htmlFor="firstName">First name:</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={user.firstName}
-                  disabled
-                  className="input-disabled"
-                />
-              </div>
-              <div className="input-wrapper">
-                <label htmlFor="lastName">Last name:</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={user.lastName}
-                  disabled
-                  className="input-disabled"
-                />
-              </div>
-              <div className="edit-buttons-wrapper">
-                <Button type="submit" className="edit-button">
-                  Save
-                </Button>
-                <Button type="button" className="edit-button" onClick={() => setEditMode(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
+            <EditUserInfo
+              user={user}
+              token={token}
+              handleUpdateUserName={handleUpdateUserName}
+              onCancel={() => setEditMode(false)}
+            />
           )}
         </div>
         <h2 className="sr-only">Accounts</h2>
