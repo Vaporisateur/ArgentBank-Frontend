@@ -259,7 +259,7 @@ paths:
           description: Internal Server Error
 
   /account/{accountID}/transactions:
-    post:
+    get:
       tags:
         - Accounts and Transactions Module
       summary: Account transactions

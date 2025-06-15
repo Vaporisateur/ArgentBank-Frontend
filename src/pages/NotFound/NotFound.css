@@ -1,0 +1,21 @@
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.not-found h1 {
+    color: #cf0606;
+    font-size: 3em;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.not-found p {
+    color: #333;
+    font-size: 1.6em;
+    text-align: center;
+    margin-top: 20px;
+}
