@@ -4,6 +4,7 @@ import Login from './pages/Login.jsx';
 import Profile from './pages/Profile.jsx';
 import NotFound from './pages/NotFound/NotFound.jsx';
 import Layout from './components/Layout.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 function App() {
   return (
@@ -12,7 +13,11 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          } />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

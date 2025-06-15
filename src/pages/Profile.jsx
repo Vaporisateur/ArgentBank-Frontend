@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import AccountCard from "../components/AccountCard";
 import Button from "../components/Button";
-import { fetchUserProfile, updateUserName } from "../store/userSlice";
+import { updateUserName } from "../store/userSlice";
 import EditUserInfo from "../components/EditUserInfo";
 
 function Profile() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user.user);
   const [editMode, setEditMode] = useState(false);
-  const [newUserName, setNewUserName] = useState(user?.userName || "");
 
   const handleUpdateUserName = (newUserName, onSuccess) => {
     dispatch(updateUserName({ token, userName: newUserName }))
@@ -20,12 +17,6 @@ function Profile() {
       .then(() => onSuccess())
       .catch((err) => alert("Erreur: " + err));
   };
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, [token, user, dispatch, navigate]);
 
   if (!user) return null;
 
