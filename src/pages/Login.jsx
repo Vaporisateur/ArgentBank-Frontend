@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/userSlice";
-import Button from "../components/Button";
+import AuthForm from "../components/AuthForm";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,7 +22,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     try {
       await dispatch(loginUser({ email, password })).unwrap();
     } catch (err) {
@@ -30,45 +29,44 @@ function Login() {
     }
   };
 
+  const fields = [
+    {
+      id: "username",
+      label: "Username",
+      type: "text",
+      value: email,
+      onChange: (e) => setEmail(e.target.value),
+      autoComplete: "username",
+    },
+    {
+      id: "password",
+      label: "Password",
+      type: "password",
+      value: password,
+      onChange: (e) => setPassword(e.target.value),
+      autoComplete: "current-password",
+    },
+  ];
+
   return (
-    <>
-      <main className="main bg-dark">
-        <section className="sign-in-content">
-          <i className="fa fa-user-circle sign-in-icon"></i>
-          <h1>Sign In</h1>
-          {error && (
-            <div className="login-error">{error}</div>
-          )}
-          <form onSubmit={handleSubmit}>
-            <div className="input-wrapper">
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                id="username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="input-remember">
-              <input type="checkbox" id="remember-me" />
-              <label htmlFor="remember-me">Remember me</label>
-            </div>
-            <Button type="submit" className="sign-in-button">
-              Sign In
-            </Button>
-          </form>
-        </section>
-      </main>
-    </>
+    <main className="main bg-dark">
+      <section className="sign-in-content">
+        <i className="fa fa-user-circle sign-in-icon"></i>
+        <AuthForm
+          title="Sign In"
+          fields={fields}
+          onSubmit={handleSubmit}
+          error={error}
+          submitLabel="Sign In"
+          submitClassName="sign-in-button"
+        >
+          <div className="input-remember">
+            <input type="checkbox" id="remember-me" />
+            <label htmlFor="remember-me">Remember me</label>
+          </div>
+        </AuthForm>
+      </section>
+    </main>
   );
 }
 

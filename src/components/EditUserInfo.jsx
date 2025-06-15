@@ -1,53 +1,51 @@
 import React, { useState, useEffect } from "react";
+import AuthForm from "./AuthForm";
 import Button from "./Button";
 
-function EditUserInfo({ user, token, handleUpdateUserName, onCancel }) {
+function EditUserInfo({ user, handleUpdateUserName, onCancel }) {
   const [newUserName, setNewUserName] = useState(user?.userName || "");
 
-  // Si l'utilisateur change (changement de profil, rechargement), on resynchronise le champ
   useEffect(() => {
     setNewUserName(user?.userName || "");
   }, [user]);
 
+  const fields = [
+    {
+      id: "userName",
+      label: "User name:",
+      type: "text",
+      value: newUserName,
+      onChange: (e) => setNewUserName(e.target.value),
+      required: true,
+    },
+    {
+      id: "firstName",
+      label: "First name:",
+      type: "text",
+      value: user.firstName,
+      disabled: true,
+      className: "input-disabled",
+    },
+    {
+      id: "lastName",
+      label: "Last name:",
+      type: "text",
+      value: user.lastName,
+      disabled: true,
+      className: "input-disabled",
+    },
+  ];
+
   return (
-    <form
+    <AuthForm
+      title="Edit user info"
+      fields={fields}
       onSubmit={e => {
         e.preventDefault();
         handleUpdateUserName(newUserName, onCancel);
       }}
       className="edit-form input-row"
     >
-      <h2 className="edit-title">Edit user info</h2>
-      <div className="input-wrapper">
-        <label htmlFor="userName">User name:</label>
-        <input
-          type="text"
-          id="userName"
-          value={newUserName}
-          onChange={e => setNewUserName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="input-wrapper">
-        <label htmlFor="firstName">First name:</label>
-        <input
-          type="text"
-          id="firstName"
-          value={user.firstName}
-          disabled
-          className="input-disabled"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label htmlFor="lastName">Last name:</label>
-        <input
-          type="text"
-          id="lastName"
-          value={user.lastName}
-          disabled
-          className="input-disabled"
-        />
-      </div>
       <div className="edit-buttons-wrapper">
         <Button type="submit" className="edit-button">
           Save
@@ -56,7 +54,7 @@ function EditUserInfo({ user, token, handleUpdateUserName, onCancel }) {
           Cancel
         </Button>
       </div>
-    </form>
+    </AuthForm>
   );
 }
 
