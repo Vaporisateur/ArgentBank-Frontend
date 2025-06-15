@@ -7,14 +7,15 @@ import { useEffect } from "react";
 
 function Layout() {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.user.token) || localStorage.getItem("token");
+  const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user.user);
+  const profileFetched = useSelector((state) => state.user.profileFetched);
 
   useEffect(() => {
-    if (token && !user) {
+    if (token && !user && !profileFetched) {
       dispatch(fetchUserProfile(token));
     }
-  }, [token, user, dispatch]);
+  }, [token, user, profileFetched, dispatch]);
 
   return (
     <>

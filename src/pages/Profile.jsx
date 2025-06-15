@@ -24,8 +24,6 @@ function Profile() {
   useEffect(() => {
     if (!token) {
       navigate("/login");
-    } else if (!user) {
-      dispatch(fetchUserProfile(token));
     }
   }, [token, user, dispatch, navigate]);
 
