@@ -85,6 +85,7 @@ const userSlice = createSlice({
     logout: (state) => {
       state.token = null;
       state.user = null;
+      state.profileFetched = false;
       localStorage.removeItem("token");
     },
   },
@@ -99,9 +100,6 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload;
-      })
-      .addCase(logout, (state) => {
-        state.profileFetched = false;
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.user = action.payload;
