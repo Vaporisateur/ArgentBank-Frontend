@@ -32,7 +32,7 @@ function Header({ isAuthenticated = false, userName = "", onLogout }) {
               >
                 <i className="fa fa-user-circle"></i> {userName}
               </span>
-              <Button type="submit" className="main-nav-item" onClick={onLogout}>
+              <Button type="submit" className="logout-button" onClick={onLogout}>
                 <i className="fa fa-sign-out"></i> Sign Out
               </Button>
             </>

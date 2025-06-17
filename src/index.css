@@ -332,6 +332,12 @@ body {
   font-weight: bold;
 }
 
+.logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 @media (min-width: 720px) {
   .account {
     flex-direction: row;
