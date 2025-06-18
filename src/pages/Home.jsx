@@ -2,6 +2,7 @@ import React from "react";
 import iconChat from "../assets/img/icon-chat.webp";
 import iconMoney from "../assets/img/icon-money.webp";
 import iconSecurity from "../assets/img/icon-security.webp";
+import bankTree from "../assets/img/bank-tree.webp";
 import FeatureItem from "../components/FeatureItem";
 
 function Home() {
@@ -9,6 +10,11 @@ function Home() {
     <>
       <main className="main">
         <div className="hero">
+          <img
+            src={bankTree}
+            alt="A tree representing financial growth"
+            className="hero-image"
+          />
           <section className="hero-content">
             <h2 className="sr-only">Promoted Content</h2>
             <p className="subtitle">No fees.</p>
