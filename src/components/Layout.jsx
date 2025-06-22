@@ -9,13 +9,12 @@ function Layout() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user.user);
-  const profileFetched = useSelector((state) => state.user.profileFetched);
 
   useEffect(() => {
-    if (token && !user && !profileFetched) {
+    if (token && !user) {
       dispatch(fetchUserProfile(token));
     }
-  }, [token, user, profileFetched, dispatch]);
+  }, [token, user, dispatch]);
 
   return (
     <>
